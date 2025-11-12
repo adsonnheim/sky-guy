@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class GameView extends View{
     Bitmap background, ground, rabbit;
@@ -38,11 +40,13 @@ public class GameView extends View{
     Random random;
     float rabbitX, rabbitY;
     float oldX;
+    float oldY;
     float oldRabbitX;
+    float oldRabbitY;
     ArrayList<Spike> spikes;
     ArrayList<Explosion> explosions;
+    //instantiates objects to be used in the game view
     public GameView(Context context) {
-
         super(context);
         this.context = context;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
@@ -78,7 +82,7 @@ public class GameView extends View{
         }
 
     }
-
+    //acts as a update function, running every frame
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
@@ -109,7 +113,7 @@ public class GameView extends View{
             && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() >= rabbitY
             && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() <= rabbitY + rabbit.getHeight()) {
                 //collision happened
-                life--;
+                //life--;
                 spikes.get(i).resetPosition();
                 if (life == 0) {
                     Intent intent = new Intent(context, GameOver.class);
@@ -139,26 +143,41 @@ public class GameView extends View{
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPDATE_MILLIS);
     }
-
+    //seems like the top left corner of the screen is coords (0, 0)
+    //sprites coords are at the top left aswell
+    //Movement
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
         float touchY = event.getY();
-        if (touchY >= rabbitY) {
+        //Log.d("positions", "Initial touched positions: " + touchX + " " + touchY);
+        //Log.d("Rabbit", "rabbitx: " + rabbitX + " rabbity: " + rabbitY);
+        if (touchX >= rabbitX - 100 && touchX <= rabbitX + 100 && touchY >= rabbitY - 150 && touchY <= rabbitY + 150) {
             int action = event.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
+                //Log.d("test","Am I executing");
                 oldX = event.getX();
+                oldY = event.getY();
                 oldRabbitX = rabbitX;
+                oldRabbitY = rabbitY;
             }
             if (action == MotionEvent.ACTION_MOVE) {
-                float shift = oldX - touchX;
-                float newRabbitX = oldRabbitX - shift;
+                //Log.d("test","Am I moving");
+                float shiftx = oldX - touchX;
+                float shifty = oldY - touchY;
+                float newRabbitX = oldRabbitX - shiftx;
+                float newRabbitY = oldRabbitY - shifty;
                 if (newRabbitX <= 0) {
-                    rabbitX = 0;
+                    rabbitX = 0; //if rabbit collides with left border
+                } else if (newRabbitY <= 0) {
+                    rabbitY = 0;
                 } else if (newRabbitX >= dWidth - rabbit.getWidth()) {
-                    rabbitX = dWidth - rabbit.getWidth();
+                    rabbitX = dWidth - rabbit.getWidth(); //if rabbit collides with right border
+                } else if (newRabbitY >= dHeight - rabbit.getHeight()) {
+                    rabbitY = dHeight - rabbit.getHeight();
                 } else {
                     rabbitX = newRabbitX;
+                    rabbitY = newRabbitY;
                 }
             }
         }
