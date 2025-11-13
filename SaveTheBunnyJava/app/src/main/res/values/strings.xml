@@ -3,4 +3,7 @@
     <string name="game_title">Title of the game</string>
     <string name="rabbit">A bunny rabbit</string>
     <string name="start">Start</string>
+    <string name="settings">Settings</string>
+    <string name="l">L</string>
+    <string name="s">S</string>
 </resources>
