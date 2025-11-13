@@ -3,29 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical"
     android:background="#e7dfc2"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/game_title"
-        android:contentDescription="@string/game_title"/>
+        android:contentDescription="@string/game_title"
+        android:src="@drawable/game_title" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rabbit"
-        android:contentDescription="@string/rabbit"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/rabbit"
+        android:src="@drawable/rabbit" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start"
+        android:backgroundTint="#bb8044"
         android:fontFamily="@font/kenney_blocks"
+        android:onClick="startGame"
+        android:text="@string/start"
+        android:textColor="@android:color/white"
+        android:textSize="32sp" />
+
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="@string/l"
         android:textSize="32sp"
+        android:layout_weight="1"
         android:textColor="@android:color/white"
         android:backgroundTint="#bb8044"
-        android:onClick="startGame" />
+        android:fontFamily="@font/kenney_blocks"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="150dp"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="100dp"
+        android:backgroundTint="#bb8044"
+        android:fontFamily="@font/kenney_blocks"
+        android:text="@string/s"
+        android:layout_weight="1"
+        android:textColor="@android:color/white"
+        android:textSize="32sp" />
+
 </LinearLayout>
