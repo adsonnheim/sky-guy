@@ -1,0 +1,34 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable background
+drawable explode0
+drawable explode1
+drawable explode2
+drawable explode3
+drawable game_title
+drawable ground
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable rabbit
+drawable spike0
+drawable spike1
+drawable spike2
+font kenney_blocks
+id ivNewHighest
+id tvHighest
+id tvPoints
+layout activity_main
+layout game_over
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string game_title
+string rabbit
+string start
+style Base.Theme.SaveTheBunnyJava
+style Theme.AppCompat.Light.NoActionBar.FullScreen
+style Theme.SaveTheBunnyJava
+xml backup_rules
+xml data_extraction_rules
