@@ -38,11 +38,19 @@ public class GameView extends View{
     int life = 3;
     static int dWidth, dHeight;
     Random random;
+    //Rabbit(AKA PLAYER)
     float rabbitX, rabbitY;
     float oldX;
     float oldY;
     float oldRabbitX;
     float oldRabbitY;
+    float rabbitFollowSpeed = 0.2f;
+    float snapThreshold = 15f;
+    float vx = 0, vy = 0;       // rabbit velocity
+    float targetX, targetY;
+    boolean isTouching = false; //holds true if user is touching screen
+    boolean isMovingWithMomentum = false;
+    boolean isRabbitGrabbed = false;
     ArrayList<Spike> spikes;
     ArrayList<Explosion> explosions;
     //instantiates objects to be used in the game view
@@ -76,7 +84,7 @@ public class GameView extends View{
         rabbitY = dHeight - ground.getHeight() - rabbit.getHeight();
         spikes = new ArrayList<>();
         explosions = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) { //creates spikes
             Spike spike = new Spike(context);
             spikes.add(spike);
         }
@@ -88,11 +96,38 @@ public class GameView extends View{
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(ground, null, rectGround, null);
-        canvas.drawBitmap(rabbit, rabbitX, rabbitY, null);
-        for (int i = 0; i < spikes.size(); i++) {
+        canvas.drawBitmap(rabbit, rabbitX - rabbit.getWidth()/ 2, rabbitY - rabbit.getHeight()/ 2, null);
+        if (isTouching && isRabbitGrabbed) {
+            // Smoothly move toward touch target
+            float dx = targetX - rabbitX;
+            float dy = targetY - rabbitY;
+            rabbitX += dx * rabbitFollowSpeed;
+            rabbitY += dy * rabbitFollowSpeed;
+
+            // Optional snap threshold
+            if (Math.abs(dx) < 2f && Math.abs(dy) < 2f) {
+                rabbitX = targetX;
+                rabbitY = targetY;
+            }
+
+            // Update velocity for potential momentum after release
+            vx = dx * rabbitFollowSpeed * 2;
+            vy = dy * rabbitFollowSpeed * 2;
+        } else if (isMovingWithMomentum) {
+            // Momentum after finger lift
+            rabbitX += vx;
+            rabbitY += vy;
+            vx *= 0.75f;
+            vy *= 0.75f;
+
+            if (Math.abs(vx) < 0.1f && Math.abs(vy) < 0.1f) {
+                isMovingWithMomentum = false;
+            }
+        }
+        for (int i = 0; i < spikes.size(); i++) {//draws spikes
             canvas.drawBitmap(spikes.get(i).getSpike(spikes.get(i).spikeFrame), spikes.get(i).spikeX, spikes.get(i).spikeY, null);
             spikes.get(i).spikeFrame++;
-            if (spikes.get(i).spikeFrame > 2) {
+            if (spikes.get(i).spikeFrame > 2) { //controls spikes animation
                 spikes.get(i).spikeFrame = 0;
             }
             spikes.get(i).spikeY += spikes.get(i).spikeVelocity;
@@ -108,11 +143,12 @@ public class GameView extends View{
         }
 
         for (int i = 0; i < spikes.size(); i++) {
-            if (spikes.get(i).spikeX + spikes.get(i).getSpikeWidth() >= rabbitX
-            && spikes.get(i).spikeX <= rabbitX + rabbit.getWidth()
-            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() >= rabbitY
-            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() <= rabbitY + rabbit.getHeight()) {
+            if (spikes.get(i).spikeX + spikes.get(i).getSpikeWidth() >= rabbitX - rabbit.getWidth()/2
+            && spikes.get(i).spikeX <= rabbitX + rabbit.getWidth() / 2
+            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() >= rabbitY - rabbit.getHeight()/2
+            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() <= rabbitY + rabbit.getHeight()/2) {
                 //collision happened
+                //Note: made rabbit immortal for testing purposes
                 //life--;
                 spikes.get(i).resetPosition();
                 if (life == 0) {
@@ -150,37 +186,32 @@ public class GameView extends View{
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
         float touchY = event.getY();
-        //Log.d("positions", "Initial touched positions: " + touchX + " " + touchY);
-        //Log.d("Rabbit", "rabbitx: " + rabbitX + " rabbity: " + rabbitY);
-        if (touchX >= rabbitX - 100 && touchX <= rabbitX + 100 && touchY >= rabbitY - 150 && touchY <= rabbitY + 150) {
-            int action = event.getAction();
-            if (action == MotionEvent.ACTION_DOWN) {
-                //Log.d("test","Am I executing");
-                oldX = event.getX();
-                oldY = event.getY();
-                oldRabbitX = rabbitX;
-                oldRabbitY = rabbitY;
-            }
-            if (action == MotionEvent.ACTION_MOVE) {
-                //Log.d("test","Am I moving");
-                float shiftx = oldX - touchX;
-                float shifty = oldY - touchY;
-                float newRabbitX = oldRabbitX - shiftx;
-                float newRabbitY = oldRabbitY - shifty;
-                if (newRabbitX <= 0) {
-                    rabbitX = 0; //if rabbit collides with left border
-                } else if (newRabbitY <= 0) {
-                    rabbitY = 0;
-                } else if (newRabbitX >= dWidth - rabbit.getWidth()) {
-                    rabbitX = dWidth - rabbit.getWidth(); //if rabbit collides with right border
-                } else if (newRabbitY >= dHeight - rabbit.getHeight()) {
-                    rabbitY = dHeight - rabbit.getHeight();
-                } else {
-                    rabbitX = newRabbitX;
-                    rabbitY = newRabbitY;
+
+        int action = event.getAction();
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (touchX >= (rabbitX - rabbit.getWidth() / 2) - 50 && touchX <= (rabbitX + rabbit.getWidth() / 2) + 50 && //the +/-50 are there so player doesn't have to exactly touch rabbit
+                        touchY >= (rabbitY - rabbit.getHeight()/2) - 50 && touchY <= (rabbitY + rabbit.getHeight()/2) + 50) {
+                    isRabbitGrabbed = true;
                 }
-            }
+                isTouching = true;
+                targetX = touchX;
+                targetY = touchY;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                targetX = touchX;
+                targetY = touchY;
+                break;
+
+            case MotionEvent.ACTION_UP:
+                isTouching = false;
+                isRabbitGrabbed = false;
+                isMovingWithMomentum = true; // optional momentum after release
+                break;
         }
+
         return true;
     }
 }
