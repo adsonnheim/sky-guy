@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,14 +20,13 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Logger;
 
 public class GameView extends View{
-    Bitmap background, ground, rabbit;
+    Bitmap background, ground, playerSprite;//defining the starting objects
     Rect rectBackground, rectGround;
     Context context;
     Handler handler;
-
+    Player player;
     final long UPDATE_MILLIS = 30;
     Runnable runnable;
     Paint textPaint = new Paint();
@@ -39,18 +37,18 @@ public class GameView extends View{
     static int dWidth, dHeight;
     Random random;
     //Rabbit(AKA PLAYER)
-    float rabbitX, rabbitY;
-    float oldX;
-    float oldY;
-    float oldRabbitX;
-    float oldRabbitY;
-    float rabbitFollowSpeed = 0.2f;
-    float snapThreshold = 15f;
-    float vx = 0, vy = 0;       // rabbit velocity
+    //float playerX, playerY;
+    //float oldX;
+    //float oldY;
+    //float oldRabbitX;
+    //float oldRabbitY;
+    //float playerFollowSpeed = 0.2f;
+    //float snapThreshold = 15f;
+    //float vx = 0, vy = 0;       // playerSprite velocity
     float targetX, targetY;
     boolean isTouching = false; //holds true if user is touching screen
-    boolean isMovingWithMomentum = false;
-    boolean isRabbitGrabbed = false;
+   // boolean isMovingWithMomentum = false;
+   // boolean isPlayerGrabbed = false;
     ArrayList<Spike> spikes;
     ArrayList<Explosion> explosions;
     //instantiates objects to be used in the game view
@@ -59,7 +57,7 @@ public class GameView extends View{
         this.context = context;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         ground = BitmapFactory.decodeResource(getResources(), R.drawable.ground);
-        rabbit = BitmapFactory.decodeResource(getResources(), R.drawable.rabbit);
+        playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.rabbit);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -80,8 +78,9 @@ public class GameView extends View{
         textPaint.setTypeface(ResourcesCompat.getFont(context, R.font.kenney_blocks));
         healthPaint.setColor(Color.GREEN);
         random = new Random();
-        rabbitX = dWidth / 2 - rabbit.getWidth() / 2;
-        rabbitY = dHeight - ground.getHeight() - rabbit.getHeight();
+        float startX = dWidth / 2f - playerSprite.getWidth() / 2f;
+        float startY = dHeight - ground.getHeight() - playerSprite.getHeight();
+        player = new Player(startX, startY);
         spikes = new ArrayList<>();
         explosions = new ArrayList<>();
         for (int i = 0; i < 3; i++) { //creates spikes
@@ -96,32 +95,31 @@ public class GameView extends View{
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(ground, null, rectGround, null);
-        canvas.drawBitmap(rabbit, rabbitX - rabbit.getWidth()/ 2, rabbitY - rabbit.getHeight()/ 2, null);
-        if (isTouching && isRabbitGrabbed) {
+        canvas.drawBitmap(playerSprite, player.playerX - playerSprite.getWidth()/ 2f, player.playerY - playerSprite.getHeight()/ 2f, null);
+        if (isTouching && player.isPlayerGrabbed) {
             // Smoothly move toward touch target
-            float dx = targetX - rabbitX;
-            float dy = targetY - rabbitY;
-            rabbitX += dx * rabbitFollowSpeed;
-            rabbitY += dy * rabbitFollowSpeed;
+            float dx = targetX - player.playerX;
+            float dy = targetY - player.playerY;
+            player.playerX += dx * player.playerFollowSpeed;
+            player.playerY += dy * player.playerFollowSpeed;
 
-            // Optional snap threshold
             if (Math.abs(dx) < 2f && Math.abs(dy) < 2f) {
-                rabbitX = targetX;
-                rabbitY = targetY;
+                player.playerX = targetX;
+                player.playerY = targetY;
             }
 
-            // Update velocity for potential momentum after release
-            vx = dx * rabbitFollowSpeed * 2;
-            vy = dy * rabbitFollowSpeed * 2;
-        } else if (isMovingWithMomentum) {
+            // Update velocity for momentum
+            player.vx = dx * player.playerFollowSpeed * 2;
+            player.vy = dy * player.playerFollowSpeed * 2;
+        } else if (player.isMovingWithMomentum) {
             // Momentum after finger lift
-            rabbitX += vx;
-            rabbitY += vy;
-            vx *= 0.75f;
-            vy *= 0.75f;
+            player.playerX += player.vx;
+            player.playerY += player.vy;
+            player.vx *= 0.75f;
+            player.vy *= 0.75f;
 
-            if (Math.abs(vx) < 0.1f && Math.abs(vy) < 0.1f) {
-                isMovingWithMomentum = false;
+            if (Math.abs(player.vx) < 0.1f && Math.abs(player.vy) < 0.1f) {
+                player.isMovingWithMomentum = false;
             }
         }
         for (int i = 0; i < spikes.size(); i++) {//draws spikes
@@ -143,12 +141,12 @@ public class GameView extends View{
         }
 
         for (int i = 0; i < spikes.size(); i++) {
-            if (spikes.get(i).spikeX + spikes.get(i).getSpikeWidth() >= rabbitX - rabbit.getWidth()/2
-            && spikes.get(i).spikeX <= rabbitX + rabbit.getWidth() / 2
-            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() >= rabbitY - rabbit.getHeight()/2
-            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() <= rabbitY + rabbit.getHeight()/2) {
+            if (spikes.get(i).spikeX + spikes.get(i).getSpikeWidth() >= player.playerX - playerSprite.getWidth()/2f
+            && spikes.get(i).spikeX <= player.playerX + playerSprite.getWidth() / 2f
+            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() >= player.playerY - playerSprite.getHeight()/2f
+            && spikes.get(i).spikeY + spikes.get(i).getSpikeWidth() <= player.playerY + playerSprite.getHeight()/2f) {
                 //collision happened
-                //Note: made rabbit immortal for testing purposes
+                //Note: made playerSprite immortal for testing purposes
                 //life--;
                 spikes.get(i).resetPosition();
                 if (life == 0) {
@@ -191,9 +189,11 @@ public class GameView extends View{
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (touchX >= (rabbitX - rabbit.getWidth() / 2) - 50 && touchX <= (rabbitX + rabbit.getWidth() / 2) + 50 && //the +/-50 are there so player doesn't have to exactly touch rabbit
-                        touchY >= (rabbitY - rabbit.getHeight()/2) - 50 && touchY <= (rabbitY + rabbit.getHeight()/2) + 50) {
-                    isRabbitGrabbed = true;
+                if (touchX >= (player.playerX - playerSprite.getWidth() / 2) - 50 &&
+                        touchX <= (player.playerX + playerSprite.getWidth() / 2) + 50 &&
+                        touchY >= (player.playerY - playerSprite.getHeight() / 2) - 50 &&
+                        touchY <= (player.playerY + playerSprite.getHeight() / 2) + 50) {
+                    player.isPlayerGrabbed = true;
                 }
                 isTouching = true;
                 targetX = touchX;
@@ -207,8 +207,8 @@ public class GameView extends View{
 
             case MotionEvent.ACTION_UP:
                 isTouching = false;
-                isRabbitGrabbed = false;
-                isMovingWithMomentum = true; // optional momentum after release
+                player.isPlayerGrabbed = false;
+                player.isMovingWithMomentum = true;
                 break;
         }
 
