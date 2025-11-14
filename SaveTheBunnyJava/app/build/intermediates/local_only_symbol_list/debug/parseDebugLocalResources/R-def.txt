@@ -4,12 +4,16 @@ color black
 color ic_launcher_background
 color white
 drawable background
+drawable bird1
+drawable bird2
+drawable bird3
 drawable explode0
 drawable explode1
 drawable explode2
 drawable explode3
 drawable game_title
 drawable ground
+drawable hatguy
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable rabbit
