@@ -1,6 +1,7 @@
 R_DEF: Internal format may change without notice
 local
 color black
+color ic_launcher_background
 color white
 drawable background
 drawable explode0
@@ -16,16 +17,23 @@ drawable spike0
 drawable spike1
 drawable spike2
 font kenney_blocks
+id button2
+id button3
 id ivNewHighest
 id tvHighest
 id tvPoints
 layout activity_main
 layout game_over
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string app_name
 string game_title
+string l
 string rabbit
+string s
+string settings
+string sky_guy
 string start
 style Base.Theme.SaveTheBunnyJava
 style Theme.AppCompat.Light.NoActionBar.FullScreen
