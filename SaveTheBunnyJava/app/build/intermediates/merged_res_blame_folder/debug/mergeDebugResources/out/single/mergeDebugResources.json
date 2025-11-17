@@ -24,8 +24,16 @@
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\xml\\backup_rules.xml"
     },
     {
+        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_bird3.png.flat",
+        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\bird3.png"
+    },
+    {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_bird1.png.flat",
+        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\bird1.png"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_explode0.png.flat",
@@ -52,24 +60,24 @@
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.savethebunnyjava.app-debug-32:/drawable_bird1.png.flat",
-        "source": "com.example.savethebunnyjava.app-main-34:/drawable/bird1.png"
-    },
-    {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-anydpi-v26\\ic_launcher.xml"
-    },
-    {
-        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_rabbit.png.flat",
-        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\rabbit.png"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
+        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_rabbit.png.flat",
+        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\rabbit.png"
+    },
+    {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.savethebunnyjava.app-debug-32:/drawable_hatguy2.png.flat",
+        "source": "com.example.savethebunnyjava.app-main-34:/drawable/hatguy2.png"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xhdpi_ic_launcher.webp.flat",
@@ -104,8 +112,8 @@
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-hdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.savethebunnyjava.app-debug-32:/drawable_bird2.png.flat",
-        "source": "com.example.savethebunnyjava.app-main-34:/drawable/bird2.png"
+        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_bird2.png.flat",
+        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\bird2.png"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_game_title.png.flat",
@@ -116,16 +124,16 @@
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xhdpi_ic_launcher_foreground.webp.flat",
-        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-xhdpi\\ic_launcher_foreground.webp"
-    },
-    {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_explode3.png.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\explode3.png"
     },
     {
-        "merged": "com.example.savethebunnyjava.app-debug-32:/drawable_bird3.png.flat",
-        "source": "com.example.savethebunnyjava.app-main-34:/drawable/bird3.png"
+        "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\mipmap-xhdpi\\ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.savethebunnyjava.app-debug-32:/layout_activity_main.xml.flat",
+        "source": "com.example.savethebunnyjava.app-main-34:/layout/activity_main.xml"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-mdpi_ic_launcher_foreground.webp.flat",
@@ -138,6 +146,10 @@
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\drawable_background.png.flat",
         "source": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-main-34:\\drawable\\background.png"
+    },
+    {
+        "merged": "com.example.savethebunnyjava.app-debug-32:/drawable_hatguy1.png.flat",
+        "source": "com.example.savethebunnyjava.app-main-34:/drawable/hatguy1.png"
     },
     {
         "merged": "C:\\Users\\Jesus\\.gradle\\daemon\\8.13\\com.example.savethebunnyjava.app-debug-32:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",

@@ -5,6 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">Save The Bunny Java</string>
     <string name="game_title">Title of the game</string>
+    <string name="hatguy">guy with a hat</string>
     <string name="l">L</string>
     <string name="rabbit">A bunny rabbit</string>
     <string name="s">S</string>

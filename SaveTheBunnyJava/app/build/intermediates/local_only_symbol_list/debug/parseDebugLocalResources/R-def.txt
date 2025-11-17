@@ -14,6 +14,8 @@ drawable explode3
 drawable game_title
 drawable ground
 drawable hatguy
+drawable hatguy1
+drawable hatguy2
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable rabbit
@@ -33,6 +35,7 @@ mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string app_name
 string game_title
+string hatguy
 string l
 string rabbit
 string s
