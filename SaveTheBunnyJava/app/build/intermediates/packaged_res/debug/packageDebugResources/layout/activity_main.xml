@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
-        android:contentDescription="@string/rabbit"
-        android:src="@drawable/rabbit" />
+        android:contentDescription="@string/hatguy"
+        android:src="@drawable/hatguy1" />
 
     <Button
         android:layout_width="wrap_content"

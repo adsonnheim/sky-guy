@@ -13,6 +13,7 @@ public class Bird {
     boolean facingRight = false;
     int birdFrame = 0;
     int birdX, birdY, birdVelocity;
+    float birdGravity = 5;
     Random random;
 
     public Bird(Context context) {
@@ -52,11 +53,11 @@ public class Bird {
         if (random.nextInt(2) == 0) {
             birdX = -200 + random.nextInt(600) * -1;
             birdY = random.nextInt(GameView.dHeight - getBirdHeight());
-            birdVelocity = 15 + random.nextInt(16);
+            birdVelocity = 5 + random.nextInt(10);
         } else {
             birdX = 1000 + random.nextInt(600);
             birdY = random.nextInt(GameView.dHeight - getBirdHeight());
-            birdVelocity = (15 + random.nextInt(16)) * -1;
+            birdVelocity = (5 + random.nextInt(10)) * -1;
         }
     }
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GameView extends View{
-    Bitmap background, ground, playerSprite;//defining the starting objects
+    Bitmap background, ground;//defining the starting objects
     Rect rectBackground, rectGround;
     Context context;
     Handler handler;
@@ -55,10 +55,9 @@ public class GameView extends View{
     public GameView(Context context) {
         super(context);
         this.context = context;
-        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-        ground = BitmapFactory.decodeResource(getResources(), R.drawable.ground);
+
         //playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.rabbit);
-        playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.hatguy);
+        //playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.hatguy);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         //display size
         Point size = new Point();
@@ -66,6 +65,13 @@ public class GameView extends View{
         dWidth = size.x;
         dHeight = size.y;
 
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        ground = BitmapFactory.decodeResource(getResources(), R.drawable.ground);
+        //start position of player
+        player = new Player(context);
+        float startX = dWidth / 2f - player.getPlayerWidth() / 2f;
+        float startY = dHeight - 100 - player.getPlayerHeight();
+        player.setPlayerPosition(startX, startY);
         rectBackground = new Rect(0,0,dWidth,dHeight);
         //rectGround = new Rect(0, dHeight - ground.getHeight(), dWidth, dHeight);
         handler = new Handler();
@@ -81,13 +87,10 @@ public class GameView extends View{
         textPaint.setTypeface(ResourcesCompat.getFont(context, R.font.kenney_blocks));
         healthPaint.setColor(Color.GREEN);
         random = new Random();
-        //start position of player
-        float startX = dWidth / 2f - playerSprite.getWidth() / 2f;
-        float startY = dHeight - ground.getHeight() - playerSprite.getHeight();
-        player = new Player(startX, startY);
+
         birds = new ArrayList<>();
         explosions = new ArrayList<>();
-        for (int i = 0; i < 3; i++) { //creates spikes
+        for (int i = 0; i < 5; i++) { //creates spikes
             Bird bird = new Bird(context);
             birds.add(bird);
             if (birds.get(i).birdVelocity > 0) birds.get(i).facingRight = true;
@@ -101,7 +104,10 @@ public class GameView extends View{
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
         //canvas.drawBitmap(ground, null, rectGround, null);
-        canvas.drawBitmap(playerSprite, player.playerX - playerSprite.getWidth()/ 2f, player.playerY - playerSprite.getHeight()/ 2f, null);
+
+        player.playerAnimation();//plays the idle animation
+        canvas.drawBitmap(player.getPlayerSprite(player.playerCurrentFrame), player.playerX - player.getPlayerWidth()/ 2f, player.playerY - player.getPlayerHeight()/ 2f, null);
+
         if (isTouching && player.isPlayerGrabbed) {
             // Smoothly move toward touch target
             float dx = targetX - player.playerX;
@@ -128,15 +134,18 @@ public class GameView extends View{
                 player.isMovingWithMomentum = false;
             }
         }
-        for (int i = 0; i < birds.size(); i++) {//draws spikes
+        for (int i = 0; i < birds.size(); i++) {//draws birds
             canvas.drawBitmap(birds.get(i).getBird(birds.get(i).birdFrame), birds.get(i).birdX, birds.get(i).birdY, null);
             birds.get(i).birdFrame++;
             if (birds.get(i).birdFrame > 2) { //controls birds animation
                 birds.get(i).birdFrame = 0;
             }
+            //bird movement
             birds.get(i).birdX += birds.get(i).birdVelocity;
+            birds.get(i).birdY += birds.get(i).birdGravity;
+
             if ((birds.get(i).birdX + birds.get(i).getBirdWidth() >= dWidth && birds.get(i).facingRight) ||
-                    (birds.get(i).birdX < 0 && !birds.get(i).facingRight)) {
+                    (birds.get(i).birdX < 0 && !birds.get(i).facingRight) || (birds.get(i).birdY + birds.get(i).getBirdHeight() >= dHeight + 100)) {
                 points += 10;
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
@@ -148,13 +157,17 @@ public class GameView extends View{
         }
 
         for (int i = 0; i < birds.size(); i++) {
-            if (birds.get(i).birdX + birds.get(i).getBirdWidth() >= player.playerX - playerSprite.getWidth()/2f
-            && birds.get(i).birdX <= player.playerX + playerSprite.getWidth() / 2f
-            && birds.get(i).birdY + birds.get(i).getBirdHeight() >= player.playerY - playerSprite.getHeight()/2f
-            && birds.get(i).birdY <= player.playerY + playerSprite.getHeight()/2f) {
+            if (birds.get(i).birdX + birds.get(i).getBirdWidth() >= player.playerX - player.getPlayerWidth()/2f
+            && birds.get(i).birdX <= player.playerX + player.getPlayerWidth() / 2f
+            && birds.get(i).birdY + birds.get(i).getBirdHeight() >= player.playerY - player.getPlayerHeight()/2f
+            && birds.get(i).birdY <= player.playerY + player.getPlayerHeight()/2f) {
                 //collision happened
                 //Note: made playerSprite immortal for testing purposes
                 //life--;
+                Explosion explosion = new Explosion(context);
+                explosion.explosionX = birds.get(i).birdX;
+                explosion.explosionY = birds.get(i).birdY;
+                explosions.add(explosion);
                 birds.get(i).resetPosition();
                 if (life == 0) {
                     Intent intent = new Intent(context, GameOver.class);
@@ -196,10 +209,10 @@ public class GameView extends View{
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (touchX >= (player.playerX - playerSprite.getWidth() / 2) - 50 &&
-                        touchX <= (player.playerX + playerSprite.getWidth() / 2) + 50 &&
-                        touchY >= (player.playerY - playerSprite.getHeight() / 2) - 50 &&
-                        touchY <= (player.playerY + playerSprite.getHeight() / 2) + 50) {
+                if (touchX >= (player.playerX - player.getPlayerWidth() / 2) - 50 &&
+                        touchX <= (player.playerX + player.getPlayerWidth() / 2) + 50 &&
+                        touchY >= (player.playerY - player.getPlayerHeight() / 2) - 50 &&
+                        touchY <= (player.playerY + player.getPlayerHeight() / 2) + 50) {
                     player.isPlayerGrabbed = true;
                 }
                 isTouching = true;
