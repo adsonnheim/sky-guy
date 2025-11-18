@@ -27,11 +27,12 @@ public class GameView extends View{
     Context context;
     Handler handler;
     Player player;
-    final long UPDATE_MILLIS = 30;
+    final long UPDATE_MILLIS = 20;
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
     float TEXT_SIZE = 120;
+    static int global = 10;
     int points = 0;
     int life = 3;
     static int dWidth, dHeight;

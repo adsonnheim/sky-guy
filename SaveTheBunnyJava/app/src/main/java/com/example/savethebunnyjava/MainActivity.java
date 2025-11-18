@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             return true;
         }
+        if (item.getItemId() == R.id.leaderboard) {
+            setContentView(R.layout.leaderboard);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

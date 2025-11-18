@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rabbit">
+    android:background="@drawable/background">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/explode3"
+            android:background="@drawable/restart"
             android:onClick="restart" />
         <View
             android:layout_width="1dp"
@@ -20,7 +20,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/spike0"
+            android:background="@drawable/exit"
             android:onClick="exit" />
     </LinearLayout>
     <LinearLayout

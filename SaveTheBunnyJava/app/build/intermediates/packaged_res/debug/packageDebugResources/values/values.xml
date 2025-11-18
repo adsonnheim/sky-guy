@@ -8,8 +8,9 @@
     <string name="gamedesc">Survive an endless flock of birds for as long as you can!</string>
     <string name="hatguy">guy with a hat</string>
     <string name="help">help</string>
-    <string name="home">home</string>
+    <string name="home">Home</string>
     <string name="l">L</string>
+    <string name="leaderboard">Leaderboard</string>
     <string name="rabbit">A bunny rabbit</string>
     <string name="s">S</string>
     <string name="settings">Settings</string>
