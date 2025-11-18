@@ -8,4 +8,7 @@
     <string name="l">L</string>
     <string name="s">S</string>
     <string name="sky_guy">Sky Guy</string>
+    <string name="gamedesc">Survive an endless flock of birds for as long as you can!</string>
+    <string name="help">help</string>
+    <string name="home">home</string>
 </resources>

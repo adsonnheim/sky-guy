@@ -13,7 +13,7 @@ public class Bird {
     boolean facingRight = false;
     int birdFrame = 0;
     int birdX, birdY, birdVelocity;
-    float birdGravity = 5;
+    float birdGravity = 2;
     Random random;
 
     public Bird(Context context) {

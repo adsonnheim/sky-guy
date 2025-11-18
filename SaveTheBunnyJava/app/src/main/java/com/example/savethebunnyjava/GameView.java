@@ -163,7 +163,7 @@ public class GameView extends View{
             && birds.get(i).birdY <= player.playerY + player.getPlayerHeight()/2f) {
                 //collision happened
                 //Note: made playerSprite immortal for testing purposes
-                //life--;
+                life--;
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
                 explosion.explosionY = birds.get(i).birdY;
