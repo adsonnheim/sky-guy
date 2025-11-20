@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Save The Bunny Java</string>
+    <string name="app_name">Sky Guy</string>
     <string name="game_title">Title of the game</string>
     <string name="rabbit">A bunny rabbit</string>
     <string name="hatguy">guy with a hat</string>
@@ -12,4 +12,10 @@
     <string name="help">help</string>
     <string name="home">Home</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="test">Test</string>
+    <string name="AboutUs">About Us</string>
+    <string name="AboutUsText">This app was developed by Jesus Sanchez and Alan Sonnheim for the class COMP SCI 292 in the Fall 2025 semester.</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="contact_us_info">sancj03@uwgb.edu and sonnad18@uwgb.edu</string>
+    <string name="wi_fi_status">Wi-Fi Status</string>
 </resources>

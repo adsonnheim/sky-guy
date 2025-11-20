@@ -1,11 +1,16 @@
 package com.example.savethebunnyjava;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+
 import com.example.savethebunnyjava.R;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +57,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void checkWifiStatus() {
+        TextView wTextView = findViewById(R.id.wifi_status_text);
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
 
+        String status;
+        if (nc == null) {
+            status = "Status: Disconnected";
+        } else {
+            if (nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                status = "Status: Connected to Wi-Fi";
+            } else {
+                status = "Status: Not Connected to Wi-Fi";
+            }
+        }
+
+        wTextView.setText(status);
+    }
 }
