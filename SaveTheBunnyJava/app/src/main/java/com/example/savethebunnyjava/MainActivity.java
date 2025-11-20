@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.settings) {
             setContentView(R.layout.settings);
+            checkWifiStatus();
             return true;
         }
         if (item.getItemId() == R.id.home) {
