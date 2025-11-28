@@ -3170,8 +3170,6 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
-id button2
-id button3
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3446,6 +3444,16 @@ id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
 id scale
+id score1
+id score10
+id score2
+id score3
+id score4
+id score5
+id score6
+id score7
+id score8
+id score9
 id screen
 id scroll
 id scrollIndicatorDown
@@ -3541,6 +3549,7 @@ id title_template
 id toggle
 id top
 id topPanel
+id top_points_text
 id touch_outside
 id transitionToEnd
 id transitionToStart
@@ -3568,6 +3577,7 @@ id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
 id west
+id wifi_status_text
 id withText
 id with_icon
 id withinBounds
@@ -3690,6 +3700,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_leaderboard
 layout activity_main
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -3710,7 +3721,6 @@ layout design_text_input_start_icon
 layout game_over
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
-layout leaderboard
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -3778,6 +3788,8 @@ mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+string AboutUs
+string AboutUsText
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -3825,6 +3837,8 @@ string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string clear_text_end_icon_content_description
+string contact_us
+string contact_us_info
 string error_a11y_label
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
@@ -3957,6 +3971,9 @@ string side_sheet_behavior
 string sky_guy
 string start
 string status_bar_notification_info_overflow
+string test
+string top_score_0
+string wi_fi_status
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog

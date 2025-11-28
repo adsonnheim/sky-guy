@@ -3,6 +3,7 @@ package com.example.savethebunnyjava;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +23,7 @@ import androidx.core.content.res.ResourcesCompat;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameView extends View{
+public class GameView extends View {
     Bitmap background, ground;//defining the starting objects
     Rect rectBackground, rectGround;
     Context context;
@@ -48,8 +50,8 @@ public class GameView extends View{
     //float vx = 0, vy = 0;       // playerSprite velocity
     float targetX, targetY;
     boolean isTouching = false; //holds true if user is touching screen
-   // boolean isMovingWithMomentum = false;
-   // boolean isPlayerGrabbed = false;
+    // boolean isMovingWithMomentum = false;
+    // boolean isPlayerGrabbed = false;
     ArrayList<Bird> birds;
     ArrayList<Explosion> explosions;
     //instantiates objects to be used in the game view
@@ -99,6 +101,7 @@ public class GameView extends View{
         }
 
     }
+
     //acts as a update function, running every frame
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -170,7 +173,22 @@ public class GameView extends View{
                 explosion.explosionY = birds.get(i).birdY;
                 explosions.add(explosion);
                 birds.get(i).resetPosition();
+
+                // When the player dies
                 if (life == 0) {
+
+                    SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+
+                    int currentHighScore = sp.getInt("highScore", 0);
+                    if (points > currentHighScore) {
+                        editor.putInt("highScore", points);
+                        editor.apply();
+                    }
+
+                    //resetLeaderboard();
+                    updateLeaderboard(points);
+
                     Intent intent = new Intent(context, GameOver.class);
                     intent.putExtra("points", points);
                     context.startActivity(intent);
@@ -198,6 +216,7 @@ public class GameView extends View{
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPDATE_MILLIS);
     }
+
     //seems like the top left corner of the screen is coords (0, 0)
     //sprites coords are at the top left aswell
     //Movement
@@ -234,5 +253,60 @@ public class GameView extends View{
         }
 
         return true;
+    }
+
+    public void resetLeaderboard() {
+        SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        for (int i = 0; i < 10; i++) {
+            editor.putInt(String.valueOf(i) + "score", 0);
+            editor.apply();
+        }
+
+        Log.d("myTag", "Leaderboard reset!");
+    }
+
+    public void updateLeaderboard(int points) {
+        SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        int previousVal = 0;
+        int lastUpdatedIndex = 0;
+        int totalValues = 0;
+
+        for (int i = 0; i < 10; i++) {
+            int curScore = sp.getInt(String.valueOf(i) + "score", 0);
+
+            if (points > curScore) {
+                previousVal = curScore;
+                editor.putInt(String.valueOf(i) + "score", points);
+                editor.apply();
+                lastUpdatedIndex = i;
+                break;
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if (sp.getInt(String.valueOf(i) + "score", 0) != 0) {
+                totalValues++;
+            }
+        }
+
+        for (int k = lastUpdatedIndex + 1; k < totalValues + 1; k++) {
+            int currentScore = sp.getInt(String.valueOf(k) + "score", 0);
+
+            if (k < totalValues + 1) {
+                editor.putInt(String.valueOf(k) + "score", previousVal);
+                editor.apply();
+            }
+
+            previousVal = currentScore;
+        }
+
+        Log.d("myTag", "Current Leaderboard : ");
+        for (int i = 0; i < 10; i++) {
+            Log.d("myTag", String.valueOf(sp.getInt(String.valueOf(i) + "score", 0)));
+        }
     }
 }

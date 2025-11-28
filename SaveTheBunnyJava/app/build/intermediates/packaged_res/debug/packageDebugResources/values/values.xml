@@ -3,7 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="ic_launcher_background">#0ECF44</color>
     <color name="white">#FFFFFFFF</color>
-    <string name="app_name">Save The Bunny Java</string>
+    <string name="AboutUs">About Us</string>
+    <string name="AboutUsText">This app was developed by Jesus Sanchez and Alan Sonnheim for the class COMP SCI 292 in the Fall 2025 semester.</string>
+    <string name="app_name">Sky Guy</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="contact_us_info">sancj03@uwgb.edu and sonnad18@uwgb.edu</string>
     <string name="game_title">Title of the game</string>
     <string name="gamedesc">Survive an endless flock of birds for as long as you can!</string>
     <string name="hatguy">guy with a hat</string>
@@ -16,6 +20,9 @@
     <string name="settings">Settings</string>
     <string name="sky_guy">Sky Guy</string>
     <string name="start">Start</string>
+    <string name="test">Test</string>
+    <string name="top_score_0">Top Score: 0</string>
+    <string name="wi_fi_status">Wi-Fi Status</string>
     <style name="Base.Theme.SaveTheBunnyJava" parent="Theme.Material3.DayNight">
         
         
