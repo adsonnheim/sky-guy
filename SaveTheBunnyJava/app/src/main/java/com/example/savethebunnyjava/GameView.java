@@ -54,6 +54,7 @@ public class GameView extends View {
     // boolean isPlayerGrabbed = false;
     ArrayList<Bird> birds;
     ArrayList<Explosion> explosions;
+    ArrayList<Cloud> clouds;
     //instantiates objects to be used in the game view
     public GameView(Context context) {
         super(context);
@@ -93,11 +94,17 @@ public class GameView extends View {
 
         birds = new ArrayList<>();
         explosions = new ArrayList<>();
-        for (int i = 0; i < 5; i++) { //creates spikes
+        clouds = new ArrayList<>();
+        for (int i = 0; i < 5; i++) { //creates birds
             Bird bird = new Bird(context);
             birds.add(bird);
             if (birds.get(i).birdVelocity > 0) birds.get(i).facingRight = true;
             else birds.get(i).facingRight = false;
+        }
+        for (int i = 0; i < 5; i++) { //creates birds
+            Cloud cloud = new Cloud(context);
+            clouds.add(cloud);
+            clouds.get(i).cloudY = random.nextInt(dHeight);
         }
 
     }
@@ -107,6 +114,20 @@ public class GameView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
+        if (random.nextInt(100) == 0) { //1/100 each frame to spawn a cloud
+            if (clouds.size() < 10) { //limits the amount of clouds on screen
+                Cloud cloud = new Cloud(context);
+                clouds.add(cloud);
+            }
+        }
+        for (int i = 0; i < clouds.size(); i++) {
+            canvas.drawBitmap(clouds.get(i).cloud[clouds.get(i).cloudFrame], clouds.get(i).cloudX, clouds.get(i).cloudY, null);
+            clouds.get(i).cloudY += clouds.get(i).cloudGravity;
+            if (clouds.get(i).cloudY > dHeight + 200) {
+                clouds.remove(i);
+            }
+        }
+
         //canvas.drawBitmap(ground, null, rectGround, null);
 
         player.playerAnimation();//plays the idle animation

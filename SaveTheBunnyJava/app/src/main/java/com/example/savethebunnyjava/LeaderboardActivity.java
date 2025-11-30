@@ -38,7 +38,7 @@ public class LeaderboardActivity extends BaseActivity {
 
         int highScore = sp.getInt("highScore", 0);
 
-        test.setText(String.valueOf(highScore));
+        test.setText("Top Score: " + String.valueOf(highScore));
 
         score1.setText("1. " + String.valueOf(sp.getInt("0score", 0)));
         score2.setText("2. " + String.valueOf(sp.getInt("1score", 0)));

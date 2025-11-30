@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="menubar">#bb8044</color>
+    <color name="onmenubar">#F8D7B7</color>
+    <color name="my_secondary">#3F51B5</color>
+    <color name="my_on_secondary">#FFFFFF</color>
+
+    <color name="my_background">#121212</color>
+    <color name="my_on_background">#FFFFFF</color>
+
+    <color name="my_surface">#1E1E1E</color>
+    <color name="my_on_surface">#FFFFFF</color>
 </resources>

@@ -1,15 +1,43 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.SaveTheBunnyJava" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
+        <!-- Disable tinting -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="materialThemeOverlay">@null</item>
+        <!-- Explicitly override M3 app bar colors -->
+        <item name="colorSurface">@color/menubar</item>               <!-- App bar background -->
+        <item name="colorOnSurface">@color/menubar</item>               <!-- Title text/icons -->
+
     </style>
 
     <style name="Theme.SaveTheBunnyJava" parent="Base.Theme.SaveTheBunnyJava" />
+    <!--
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+
+        <item name="colorPrimary">@color/my_primary</item>
+        <item name="colorOnPrimary">@color/my_on_primary</item>
+
+        <item name="colorSecondary">@color/my_secondary</item>
+        <item name="colorOnSecondary">@color/my_on_secondary</item>
+        -->
+        <!-- Background & surface
+        <item name="colorSurface">@color/my_surface</item>
+        <item name="colorOnSurface">@color/my_on_surface</item>
+    </style>
+    -->
+    <style name="MyPopupMenu" parent="Widget.Material3.PopupMenu">
+        <!-- Background of the dropdown -->
+        <item name="android:popupBackground">@color/menubar</item>
+
+        <!-- Text color of menu items -->
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>
