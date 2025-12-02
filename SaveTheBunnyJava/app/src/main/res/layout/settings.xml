@@ -11,7 +11,11 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="228dp">
-
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/home"
+            android:onClick="restart" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

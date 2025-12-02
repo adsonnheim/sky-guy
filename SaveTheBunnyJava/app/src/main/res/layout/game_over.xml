@@ -11,7 +11,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/restart"
+            android:background="@drawable/home"
             android:onClick="restart" />
         <View
             android:layout_width="1dp"
