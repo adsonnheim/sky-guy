@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.Log;
@@ -32,11 +34,14 @@ public class GameView extends View {
     final long UPDATE_MILLIS = 20;
     Runnable runnable;
     Paint textPaint = new Paint();
+    Paint textPaintStage = new Paint();
     Paint healthPaint = new Paint();
     float TEXT_SIZE = 120;
     static int global = 10;
     int points = 0;
     int life = 3;
+    int stage = 0;
+    int stagePopupTime = 70;
     static int dWidth, dHeight;
     Random random;
     //Rabbit(AKA PLAYER)
@@ -89,6 +94,7 @@ public class GameView extends View {
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTypeface(ResourcesCompat.getFont(context, R.font.kenney_blocks));
+        textPaintStage = textPaint;
         healthPaint.setColor(Color.GREEN);
         random = new Random();
 
@@ -113,7 +119,47 @@ public class GameView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(background, null, rectBackground, null);
+        Paint paint = new Paint();
+        int sky = Color.rgb(143, 255, 255);
+        int night = Color.rgb(10, 20, 60);
+        int dawn = Color.rgb(255, 100, 80);
+
+        int resultColor;
+
+        if (points <= 5000) {
+            float t = points / 5000f;            // 0 → 1
+            resultColor = lerpColor(sky, night, t);
+        }
+        else if (points <= 10000) {
+            float t = (points - 10000) / 10000f;  // 0 → 1
+            resultColor = lerpColor(night, dawn, t);
+        }
+        else {
+            resultColor = dawn;
+        }
+        paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
+
+        canvas.drawBitmap(background, null, rectBackground, paint);
+        //triggers stage popup
+        if (points >= (stage * 1000)) {
+            stage++;
+            stagePopupTime = 70;
+        }
+        if (stagePopupTime > 0) {
+            stagePopupTime--;
+
+            // fade: 0.0 → 1.0
+            float t = stagePopupTime / 70f;
+
+            // convert to 0–255 alpha
+            int alpha = (int)(255 * t);
+            textPaintStage.setAlpha(alpha);
+
+            canvas.drawText("Stage " + stage, 300, TEXT_SIZE, textPaintStage);
+            textPaintStage.setAlpha(255);
+        }
+        //canvas.drawText("Stage " + stage, 600, TEXT_SIZE, textPaint);
+
         if (random.nextInt(100) == 0) { //1/100 each frame to spawn a cloud
             if (clouds.size() < 10) { //limits the amount of clouds on screen
                 Cloud cloud = new Cloud(context);
@@ -159,6 +205,7 @@ public class GameView extends View {
                 player.isMovingWithMomentum = false;
             }
         }
+        Bird.birdRandomVelocity = 5 + ((int)Math.floor(points / 500) * 3);
         for (int i = 0; i < birds.size(); i++) {//draws birds
             canvas.drawBitmap(birds.get(i).getBird(birds.get(i).birdFrame), birds.get(i).birdX, birds.get(i).birdY, null);
             birds.get(i).birdFrame++;
@@ -188,7 +235,7 @@ public class GameView extends View {
             && birds.get(i).birdY <= player.playerY + player.getPlayerHeight()/2f) {
                 //collision happened
                 //Note: made playerSprite immortal for testing purposes
-                life--;
+                //life--;
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
                 explosion.explosionY = birds.get(i).birdY;
@@ -330,4 +377,12 @@ public class GameView extends View {
             Log.d("myTag", String.valueOf(sp.getInt(String.valueOf(i) + "score", 0)));
         }
     }
+
+    private int lerpColor(int c1, int c2, float t) {
+        int r = (int) (Color.red(c1)   + (Color.red(c2)   - Color.red(c1)) * t);
+        int g = (int) (Color.green(c1) + (Color.green(c2) - Color.green(c1)) * t);
+        int b = (int) (Color.blue(c1)  + (Color.blue(c2)  - Color.blue(c1)) * t);
+        return Color.rgb(r, g, b);
+    }
+
 }
