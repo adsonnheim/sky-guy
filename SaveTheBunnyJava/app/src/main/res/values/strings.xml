@@ -20,4 +20,6 @@
     <string name="wi_fi_status">Wi-Fi Status</string>
     <string name="welcome_to">Welcome to</string>
     <string name="top_score_0">Top Score: 0</string>
+    <string name="current_avatar">Current Avatar</string>
+    <string name="todo">TODO</string>
 </resources>

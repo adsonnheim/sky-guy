@@ -10,17 +10,23 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:fontFamily="@font/mouldycheese"
+        android:text="@string/welcome_to"
+        android:textSize="32sp"
+        android:gravity="bottom"
+        android:padding="8dp"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:fontFamily="@font/kenney_blocks"
         android:text="@string/sky_guy"
         android:textSize="64sp"
         android:gravity="bottom"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:contentDescription="@string/hatguy"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/hatguy1" />
 
     <Button
@@ -40,4 +46,37 @@
         android:textSize="32sp"
         android:gravity="bottom"
         android:padding="8dp"/>
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_marginTop="100dp">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="@string/l"
+            android:textSize="32sp"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#bb8044"
+            android:fontFamily="@font/kenney_blocks" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="200dp"
+            android:backgroundTint="#bb8044"
+            android:fontFamily="@font/kenney_blocks"
+            android:text="@string/s"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+
+    </LinearLayout>
+    -->
+
 </LinearLayout>

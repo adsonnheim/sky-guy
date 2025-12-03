@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,8 +34,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (itemId == R.id.settings) {
-            setContentView(R.layout.settings);
-            checkWifiStatus();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
 

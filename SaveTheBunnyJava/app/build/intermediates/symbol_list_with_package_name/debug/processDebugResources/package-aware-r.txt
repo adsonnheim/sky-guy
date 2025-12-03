@@ -1986,6 +1986,7 @@ color material_timepicker_button_stroke
 color material_timepicker_clock_text_color
 color material_timepicker_clockface
 color material_timepicker_modebutton_tint
+color menubar
 color mtrl_btn_bg_color_selector
 color mtrl_btn_ripple_color
 color mtrl_btn_stroke_color_selector
@@ -2041,8 +2042,15 @@ color mtrl_textinput_disabled_color
 color mtrl_textinput_filled_box_default_background_color
 color mtrl_textinput_focused_box_stroke_color
 color mtrl_textinput_hovered_box_stroke_color
+color my_background
+color my_on_background
+color my_on_secondary
+color my_on_surface
+color my_secondary
+color my_surface
 color notification_action_color_filter
 color notification_icon_bg_color
+color onmenubar
 color primary_dark_material_dark
 color primary_dark_material_light
 color primary_material_dark
@@ -2954,6 +2962,9 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable cloud1
+drawable cloud2
+drawable cloud3
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -2969,6 +2980,7 @@ drawable ground
 drawable hatguy
 drawable hatguy1
 drawable hatguy2
+drawable home
 drawable ic_arrow_back_black_24
 drawable ic_call_answer
 drawable ic_call_answer_low
@@ -3159,6 +3171,8 @@ id auto
 id autoComplete
 id autoCompleteToEnd
 id autoCompleteToStart
+id avatarImageView
+id avatar_label
 id barrier
 id baseline
 id beginOnFirstDraw
@@ -3470,6 +3484,7 @@ id search_mag_icon
 id search_plate
 id search_src_text
 id search_voice_btn
+id selectAvatarButton
 id select_dialog_listview
 id selected
 id selection_type
@@ -3702,6 +3717,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_leaderboard
 layout activity_main
+layout activity_settings
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3781,7 +3797,6 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
-layout settings
 layout support_simple_spinner_dropdown_item
 menu game_menu
 mipmap ic_launcher
@@ -3839,6 +3854,7 @@ string character_counter_pattern
 string clear_text_end_icon_content_description
 string contact_us
 string contact_us_info
+string current_avatar
 string error_a11y_label
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
@@ -3972,7 +3988,9 @@ string sky_guy
 string start
 string status_bar_notification_info_overflow
 string test
+string todo
 string top_score_0
+string welcome_to
 string wi_fi_status
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
@@ -4285,6 +4303,7 @@ style MaterialAlertDialog_MaterialComponents_Title_Panel
 style MaterialAlertDialog_MaterialComponents_Title_Panel_CenterStacked
 style MaterialAlertDialog_MaterialComponents_Title_Text
 style MaterialAlertDialog_MaterialComponents_Title_Text_CenterStacked
+style MyPopupMenu
 style Platform_AppCompat
 style Platform_AppCompat_Light
 style Platform_MaterialComponents
@@ -4519,7 +4538,6 @@ style Theme_AppCompat_Light_Dialog_Alert
 style Theme_AppCompat_Light_Dialog_MinWidth
 style Theme_AppCompat_Light_DialogWhenLarge
 style Theme_AppCompat_Light_NoActionBar
-style Theme_AppCompat_Light_NoActionBar_FullScreen
 style Theme_AppCompat_NoActionBar
 style Theme_Design
 style Theme_Design_BottomSheetDialog

@@ -2,11 +2,22 @@ R_DEF: Internal format may change without notice
 local
 color black
 color ic_launcher_background
+color menubar
+color my_background
+color my_on_background
+color my_on_secondary
+color my_on_surface
+color my_secondary
+color my_surface
+color onmenubar
 color white
 drawable background
 drawable bird1
 drawable bird2
 drawable bird3
+drawable cloud1
+drawable cloud2
+drawable cloud3
 drawable exit
 drawable explode0
 drawable explode1
@@ -17,6 +28,7 @@ drawable ground
 drawable hatguy
 drawable hatguy1
 drawable hatguy2
+drawable home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable rabbit
@@ -26,6 +38,8 @@ drawable spike1
 drawable spike2
 font kenney_blocks
 font mouldycheese
+id avatarImageView
+id avatar_label
 id home
 id ivNewHighest
 id leaderboard
@@ -39,6 +53,7 @@ id score6
 id score7
 id score8
 id score9
+id selectAvatarButton
 id settings
 id top_points_text
 id tvHighest
@@ -46,8 +61,8 @@ id tvPoints
 id wifi_status_text
 layout activity_leaderboard
 layout activity_main
+layout activity_settings
 layout game_over
-layout settings
 menu game_menu
 mipmap ic_launcher
 mipmap ic_launcher_foreground
@@ -57,6 +72,7 @@ string AboutUsText
 string app_name
 string contact_us
 string contact_us_info
+string current_avatar
 string game_title
 string gamedesc
 string hatguy
@@ -70,10 +86,12 @@ string settings
 string sky_guy
 string start
 string test
+string todo
 string top_score_0
+string welcome_to
 string wi_fi_status
 style Base.Theme.SaveTheBunnyJava
-style Theme.AppCompat.Light.NoActionBar.FullScreen
+style MyPopupMenu
 style Theme.SaveTheBunnyJava
 xml backup_rules
 xml data_extraction_rules

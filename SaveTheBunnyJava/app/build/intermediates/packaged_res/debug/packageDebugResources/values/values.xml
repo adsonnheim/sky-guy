@@ -2,12 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="ic_launcher_background">#0ECF44</color>
+    <color name="menubar">#bb8044</color>
+    <color name="my_background">#121212</color>
+    <color name="my_on_background">#FFFFFF</color>
+    <color name="my_on_secondary">#FFFFFF</color>
+    <color name="my_on_surface">#FFFFFF</color>
+    <color name="my_secondary">#3F51B5</color>
+    <color name="my_surface">#1E1E1E</color>
+    <color name="onmenubar">#F8D7B7</color>
     <color name="white">#FFFFFFFF</color>
     <string name="AboutUs">About Us</string>
     <string name="AboutUsText">This app was developed by Jesus Sanchez and Alan Sonnheim for the class COMP SCI 292 in the Fall 2025 semester.</string>
     <string name="app_name">Sky Guy</string>
     <string name="contact_us">Contact Us</string>
     <string name="contact_us_info">sancj03@uwgb.edu and sonnad18@uwgb.edu</string>
+    <string name="current_avatar">Current Avatar</string>
     <string name="game_title">Title of the game</string>
     <string name="gamedesc">Survive an endless flock of birds for as long as you can!</string>
     <string name="hatguy">guy with a hat</string>
@@ -21,17 +30,29 @@
     <string name="sky_guy">Sky Guy</string>
     <string name="start">Start</string>
     <string name="test">Test</string>
+    <string name="todo">TODO</string>
     <string name="top_score_0">Top Score: 0</string>
+    <string name="welcome_to">Welcome to</string>
     <string name="wi_fi_status">Wi-Fi Status</string>
     <style name="Base.Theme.SaveTheBunnyJava" parent="Theme.Material3.DayNight">
-        
-        
-    </style>
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
+        
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="materialThemeOverlay">@null</item>
+        
+        <item name="colorSurface">@color/menubar</item>               
+        <item name="colorOnSurface">@color/menubar</item>               
+
+    </style>
+    <style name="MyPopupMenu" parent="Widget.Material3.PopupMenu">
+        
+        <item name="android:popupBackground">@color/menubar</item>
+
+        
+        <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="Theme.SaveTheBunnyJava" parent="Base.Theme.SaveTheBunnyJava"/>
 </resources>
