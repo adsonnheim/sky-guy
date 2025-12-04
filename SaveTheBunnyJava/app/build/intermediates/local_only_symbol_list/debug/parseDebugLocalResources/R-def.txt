@@ -55,6 +55,7 @@ id score8
 id score9
 id selectAvatarButton
 id settings
+id settingsVideoView
 id top_points_text
 id tvHighest
 id tvPoints
@@ -67,9 +68,11 @@ menu game_menu
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
+raw nice
 string AboutUs
 string AboutUsText
 string app_name
+string choose_avatar
 string contact_us
 string contact_us_info
 string current_avatar
@@ -88,6 +91,7 @@ string start
 string test
 string todo
 string top_score_0
+string video_tutorial
 string welcome_to
 string wi_fi_status
 style Base.Theme.SaveTheBunnyJava

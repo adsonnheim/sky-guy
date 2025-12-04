@@ -3,10 +3,12 @@ package com.example.savethebunnyjava;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,10 +17,11 @@ public class SettingsActivity extends BaseActivity {
 
     private ImageView avatarImageView;
     private Button selectAvatarButton;
+    private VideoView settingsVideoView;
     private ActivityResultLauncher<Intent> galleryLauncher;
     private static final String PREFS_NAME = "GamePrefs";
     private static final String AVATAR_URI_KEY = "avatarUri";
-
+    private int videoPlaybackPosition = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,9 @@ public class SettingsActivity extends BaseActivity {
 
         avatarImageView = findViewById(R.id.avatarImageView);
         selectAvatarButton = findViewById(R.id.selectAvatarButton);
+        settingsVideoView = findViewById(R.id.settingsVideoView);
+
+        setupVideoPlayer();
 
         galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -51,6 +57,34 @@ public class SettingsActivity extends BaseActivity {
         });
 
         loadAvatar();
+    }
+
+    private void setupVideoPlayer() {
+        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nice);
+        settingsVideoView.setVideoURI(videoUri);
+
+        settingsVideoView.setOnCompletionListener(MediaPlayer::start);
+
+        settingsVideoView.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (settingsVideoView.isPlaying()) {
+            videoPlaybackPosition = settingsVideoView.getCurrentPosition();
+            settingsVideoView.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!settingsVideoView.isPlaying()) {
+            settingsVideoView.seekTo(videoPlaybackPosition);
+            settingsVideoView.start();
+        }
     }
 
     private void saveAvatarUri(Uri uri) {

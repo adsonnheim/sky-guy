@@ -3489,6 +3489,7 @@ id select_dialog_listview
 id selected
 id selection_type
 id settings
+id settingsVideoView
 id sharedValueSet
 id sharedValueUnset
 id shortcut
@@ -3803,6 +3804,7 @@ mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+raw nice
 string AboutUs
 string AboutUsText
 string abc_action_bar_home_description
@@ -3851,6 +3853,7 @@ string call_notification_screening_text
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
+string choose_avatar
 string clear_text_end_icon_content_description
 string contact_us
 string contact_us_info
@@ -3990,6 +3993,7 @@ string status_bar_notification_info_overflow
 string test
 string todo
 string top_score_0
+string video_tutorial
 string welcome_to
 string wi_fi_status
 style AlertDialog_AppCompat
