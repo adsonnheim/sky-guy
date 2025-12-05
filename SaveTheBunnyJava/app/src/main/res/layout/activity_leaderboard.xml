@@ -22,13 +22,6 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/top_points_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/mouldycheese"
-            android:text="@string/top_score_0"
-            android:textSize="24sp" />
-        <TextView
             android:id="@+id/score1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

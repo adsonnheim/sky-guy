@@ -16,7 +16,7 @@ public class LeaderboardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        test = findViewById(R.id.top_points_text);
+        //test = findViewById(R.id.top_points_text);
         score1 = findViewById(R.id.score1);
         score2 = findViewById(R.id.score2);
         score3 = findViewById(R.id.score3);
@@ -40,7 +40,7 @@ public class LeaderboardActivity extends BaseActivity {
 
         int highScore = sp.getInt("highScore", 0);
 
-        test.setText("Top Score: " + String.valueOf(highScore));
+        //test.setText("Top Score: " + String.valueOf(highScore));
 
         score1.setText("1. " + String.valueOf(sp.getInt("0score", 0)));
         score2.setText("2. " + String.valueOf(sp.getInt("1score", 0)));

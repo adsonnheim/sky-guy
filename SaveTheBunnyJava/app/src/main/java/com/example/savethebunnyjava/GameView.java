@@ -41,7 +41,7 @@ public class GameView extends View {
     int points = 0;
     int life = 3;
     int stage = 0;
-    int stagePopupTime = 70;
+    int stagePopupTime = 100;
     static int dWidth, dHeight;
     Random random;
     //Rabbit(AKA PLAYER)
@@ -112,7 +112,7 @@ public class GameView extends View {
             clouds.add(cloud);
             clouds.get(i).cloudY = random.nextInt(dHeight);
         }
-
+        //resetLeaderboard();
     }
 
     //acts as a update function, running every frame
@@ -120,42 +120,46 @@ public class GameView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         Paint paint = new Paint();
-        int sky = Color.rgb(143, 255, 255);
+        int day = Color.rgb(143, 255, 255);
         int night = Color.rgb(10, 20, 60);
         int dawn = Color.rgb(255, 100, 80);
+        int cycle = 6000;
+        int phase = cycle / 3;   // = 2000
+        int p = points % cycle;
 
         int resultColor;
 
-        if (points <= 5000) {
-            float t = points / 5000f;            // 0 → 1
-            resultColor = lerpColor(sky, night, t);
+        if (p < phase) {
+            float t = p / (float)phase;
+            resultColor = lerpColor(day, night, t);
         }
-        else if (points <= 10000) {
-            float t = (points - 10000) / 10000f;  // 0 → 1
+        else if (p < phase * 2) {
+            float t = (p - phase) / (float)phase;
             resultColor = lerpColor(night, dawn, t);
         }
         else {
-            resultColor = dawn;
+            float t = (p - phase * 2) / (float)phase;
+            resultColor = lerpColor(dawn, day, t);
         }
-        paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
 
+        paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(background, null, rectBackground, paint);
         //triggers stage popup
         if (points >= (stage * 1000)) {
             stage++;
-            stagePopupTime = 70;
+            stagePopupTime = 100;
         }
         if (stagePopupTime > 0) {
             stagePopupTime--;
 
             // fade: 0.0 → 1.0
-            float t = stagePopupTime / 70f;
+            float t = stagePopupTime / 100f;
 
             // convert to 0–255 alpha
             int alpha = (int)(255 * t);
             textPaintStage.setAlpha(alpha);
 
-            canvas.drawText("Stage " + stage, 300, TEXT_SIZE, textPaintStage);
+            canvas.drawText("Stage " + stage, 300, TEXT_SIZE + 300, textPaintStage);
             textPaintStage.setAlpha(255);
         }
         //canvas.drawText("Stage " + stage, 600, TEXT_SIZE, textPaint);
@@ -205,7 +209,7 @@ public class GameView extends View {
                 player.isMovingWithMomentum = false;
             }
         }
-        Bird.birdRandomVelocity = 5 + ((int)Math.floor(points / 500) * 3);
+        Bird.birdRandomVelocity = 5 + ((int)Math.floor(points / 500) * 30);
         for (int i = 0; i < birds.size(); i++) {//draws birds
             canvas.drawBitmap(birds.get(i).getBird(birds.get(i).birdFrame), birds.get(i).birdX, birds.get(i).birdY, null);
             birds.get(i).birdFrame++;
@@ -235,7 +239,7 @@ public class GameView extends View {
             && birds.get(i).birdY <= player.playerY + player.getPlayerHeight()/2f) {
                 //collision happened
                 //Note: made playerSprite immortal for testing purposes
-                //life--;
+                life--;
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
                 explosion.explosionY = birds.get(i).birdY;
@@ -279,7 +283,23 @@ public class GameView extends View {
         } else if (life == 1) {
             healthPaint.setColor((Color.RED));
         }
-        canvas.drawRect(dWidth-200, 30, dWidth-200+60*life, 80, healthPaint);
+        int barBottom = 300;      // fixed bottom
+        int barWidth = 60;
+
+        int maxHeight = 80;      // full health height
+        int currentHeight = (int)(maxHeight * life);  // life should be 0..1
+        Paint borderPaint = new Paint();
+        borderPaint.setStyle(Paint.Style.STROKE);   // IMPORTANT!!
+        borderPaint.setColor(Color.BLACK);
+        borderPaint.setStrokeWidth(8);
+        canvas.drawRect(
+                dWidth - 60,               // left
+                barBottom - currentHeight, // top (moves up when life gets lower)
+                dWidth - 20,               // right
+                barBottom,                 // bottom stays fixed
+                healthPaint
+        );
+        canvas.drawRect(dWidth - 60, barBottom - currentHeight, dWidth - 20, barBottom, borderPaint);
 
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPDATE_MILLIS);

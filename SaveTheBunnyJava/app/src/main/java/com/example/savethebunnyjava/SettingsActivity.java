@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -63,10 +64,18 @@ public class SettingsActivity extends BaseActivity {
         Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nice);
         settingsVideoView.setVideoURI(videoUri);
 
-        settingsVideoView.setOnCompletionListener(MediaPlayer::start);
+        // --- ADD THIS ---
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(settingsVideoView);
+        settingsVideoView.setMediaController(mediaController);
+        // ----------------
+
+        // Looping
+        settingsVideoView.setOnCompletionListener(mp -> settingsVideoView.start());
 
         settingsVideoView.start();
     }
+
 
     @Override
     protected void onPause() {
