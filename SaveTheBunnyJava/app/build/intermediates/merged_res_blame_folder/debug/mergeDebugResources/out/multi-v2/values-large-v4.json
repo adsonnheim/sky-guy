@@ -4,7 +4,7 @@
             "outputFile": "com.example.savethebunnyjava.app-mergeDebugResources-30:/values-large-v4/values-large-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\8.13\\transforms\\b2016df68462cfb79fee6eca4a4cba58\\transformed\\appcompat-1.6.1\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\sonnh\\.gradle\\caches\\8.13\\transforms\\b2016df68462cfb79fee6eca4a4cba58\\transformed\\appcompat-1.6.1\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\8.13\\transforms\\2eb8e0caeeec4a596c4e4b415287a92d\\transformed\\material-1.10.0\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\sonnh\\.gradle\\caches\\8.13\\transforms\\2eb8e0caeeec4a596c4e4b415287a92d\\transformed\\material-1.10.0\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

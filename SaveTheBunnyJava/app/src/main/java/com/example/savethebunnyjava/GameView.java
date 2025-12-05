@@ -352,50 +352,49 @@ public class GameView extends View {
             editor.apply();
         }
 
-        Log.d("myTag", "Leaderboard reset!");
+        //Log.d("myTag", "Leaderboard reset!");
     }
 
     public void updateLeaderboard(int points) {
+        if (points == 0) {
+            return;
+        }
+
         SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
-        int previousVal = 0;
-        int lastUpdatedIndex = 0;
-        int totalValues = 0;
+        String currentUserAvatarUri = sp.getString("avatarUri", null);
 
+        int newPosition = -1;
         for (int i = 0; i < 10; i++) {
-            int curScore = sp.getInt(String.valueOf(i) + "score", 0);
-
-            if (points > curScore) {
-                previousVal = curScore;
-                editor.putInt(String.valueOf(i) + "score", points);
-                editor.apply();
-                lastUpdatedIndex = i;
+            if (points > sp.getInt(String.valueOf(i) + "score", 0)) {
+                newPosition = i;
                 break;
             }
         }
 
-        for (int i = 0; i < 10; i++) {
-            if (sp.getInt(String.valueOf(i) + "score", 0) != 0) {
-                totalValues++;
+        if (newPosition != -1) {
+            for (int i = 8; i >= newPosition; i--) {
+                int scoreToMove = sp.getInt(String.valueOf(i) + "score", 0);
+                String avatarToMove = sp.getString("score" + (i + 1) + "Avatar", null);
+
+                editor.putInt(String.valueOf(i + 1) + "score", scoreToMove);
+                if (avatarToMove != null) {
+                    editor.putString("score" + (i + 2) + "Avatar", avatarToMove);
+                } else {
+                    editor.remove("score" + (i + 2) + "Avatar");
+                }
+            }
+
+            editor.putInt(String.valueOf(newPosition) + "score", points);
+            if (currentUserAvatarUri != null) {
+                editor.putString("score" + (newPosition + 1) + "Avatar", currentUserAvatarUri);
+            } else {
+                editor.remove("score" + (newPosition + 1) + "Avatar");
             }
         }
 
-        for (int k = lastUpdatedIndex + 1; k < totalValues + 1; k++) {
-            int currentScore = sp.getInt(String.valueOf(k) + "score", 0);
-
-            if (k < totalValues + 1) {
-                editor.putInt(String.valueOf(k) + "score", previousVal);
-                editor.apply();
-            }
-
-            previousVal = currentScore;
-        }
-
-        Log.d("myTag", "Current Leaderboard : ");
-        for (int i = 0; i < 10; i++) {
-            Log.d("myTag", String.valueOf(sp.getInt(String.valueOf(i) + "score", 0)));
-        }
+        editor.apply();
     }
 
     private int lerpColor(int c1, int c2, float t) {

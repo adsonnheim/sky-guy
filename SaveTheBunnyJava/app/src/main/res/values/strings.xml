@@ -24,4 +24,5 @@
     <string name="todo">TODO</string>
     <string name="choose_avatar">Choose Avatar</string>
     <string name="video_tutorial">Video Tutorial</string>
+    <string name="reset_leaderboard">Reset Leaderboard</string>
 </resources>
