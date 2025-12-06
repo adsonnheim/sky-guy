@@ -13,6 +13,8 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
@@ -60,11 +62,23 @@ public class GameView extends View {
     ArrayList<Bird> birds;
     ArrayList<Explosion> explosions;
     ArrayList<Cloud> clouds;
+
+    public SoundPool soundPool;
+    public int dmgSound, lvlUpSound, birdDeathSound;
+    public boolean readyToPlay = false;
     //instantiates objects to be used in the game view
     public GameView(Context context) {
         super(context);
         this.context = context;
-
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        dmgSound = soundPool.load(context, R.raw.dmgplayer, 1);
+        lvlUpSound = soundPool.load(context, R.raw.lvlup, 1);
+        birdDeathSound = soundPool.load(context, R.raw.bird, 1);
+        soundPool.setOnLoadCompleteListener((sp, sampleId, status) -> {
+            if (status == 0 && (sampleId == dmgSound || sampleId == lvlUpSound)) {
+                readyToPlay = true; // now safe to play any loaded sound
+            }
+        });
         //playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.rabbit);
         //playerSprite = BitmapFactory.decodeResource(getResources(), R.drawable.hatguy);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -113,6 +127,9 @@ public class GameView extends View {
             clouds.get(i).cloudY = random.nextInt(dHeight);
         }
         //resetLeaderboard();
+        if (readyToPlay) {
+            soundPool.play(lvlUpSound, 1f, 1f, 3, 0, 1f);
+        }
     }
 
     //acts as a update function, running every frame
@@ -144,24 +161,7 @@ public class GameView extends View {
 
         paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(background, null, rectBackground, paint);
-        //triggers stage popup
-        if (points >= (stage * 1000)) {
-            stage++;
-            stagePopupTime = 100;
-        }
-        if (stagePopupTime > 0) {
-            stagePopupTime--;
 
-            // fade: 0.0 → 1.0
-            float t = stagePopupTime / 100f;
-
-            // convert to 0–255 alpha
-            int alpha = (int)(255 * t);
-            textPaintStage.setAlpha(alpha);
-
-            canvas.drawText("Stage " + stage, 300, TEXT_SIZE + 300, textPaintStage);
-            textPaintStage.setAlpha(255);
-        }
         //canvas.drawText("Stage " + stage, 600, TEXT_SIZE, textPaint);
 
         if (random.nextInt(100) == 0) { //1/100 each frame to spawn a cloud
@@ -177,7 +177,29 @@ public class GameView extends View {
                 clouds.remove(i);
             }
         }
+        //triggers stage popup
+        if (points >= (stage * 1000)) {
+            stage++;
+            stagePopupTime = 100;
+            if (readyToPlay) {
+                soundPool.play(lvlUpSound, 1f, 1f, 3, 0, 1f);
+            }
+            Log.d("something", "STAGE");
+        }
 
+        if (stagePopupTime > 0) {
+            stagePopupTime--;
+
+            // fade: 0.0 → 1.0
+            float t = stagePopupTime / 100f;
+
+            // convert to 0–255 alpha
+            int alpha = (int)(255 * t);
+            textPaintStage.setAlpha(alpha);
+
+            canvas.drawText("Stage " + stage, 300, TEXT_SIZE + 300, textPaintStage);
+            textPaintStage.setAlpha(255);
+        }
         //canvas.drawBitmap(ground, null, rectGround, null);
 
         player.playerAnimation();//plays the idle animation
@@ -219,10 +241,13 @@ public class GameView extends View {
             //bird movement
             birds.get(i).birdX += birds.get(i).birdVelocity;
             birds.get(i).birdY += birds.get(i).birdGravity;
-
+            //bird tocuhes side screen
             if ((birds.get(i).birdX + birds.get(i).getBirdWidth() >= dWidth && birds.get(i).facingRight) ||
                     (birds.get(i).birdX < 0 && !birds.get(i).facingRight) || (birds.get(i).birdY + birds.get(i).getBirdHeight() >= dHeight + 100)) {
                 points += 10;
+                if (readyToPlay) {
+                    soundPool.play(birdDeathSound, 0.5f, 0.5f, 3, 0, 1f);
+                }
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
                 explosion.explosionY = birds.get(i).birdY;
@@ -240,6 +265,9 @@ public class GameView extends View {
                 //collision happened
                 //Note: made playerSprite immortal for testing purposes
                 life--;
+                if (readyToPlay) {
+                    soundPool.play(dmgSound, 1f, 1f, 1, 0, 1f);
+                }
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = birds.get(i).birdX;
                 explosion.explosionY = birds.get(i).birdY;
@@ -248,7 +276,6 @@ public class GameView extends View {
 
                 // When the player dies
                 if (life == 0) {
-
                     SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
 
@@ -342,7 +369,6 @@ public class GameView extends View {
 
         return true;
     }
-
     public void resetLeaderboard() {
         SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

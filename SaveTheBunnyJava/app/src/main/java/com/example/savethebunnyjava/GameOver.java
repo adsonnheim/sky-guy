@@ -2,6 +2,8 @@ package com.example.savethebunnyjava;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +18,9 @@ public class GameOver extends AppCompatActivity {
     TextView tvHighest;
     SharedPreferences sharedPreferences;
     ImageView ivNewHighest;
-
+    private SoundPool soundPool;
+    private int clickSound;
+    private boolean readyToPlay = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,14 +43,28 @@ public class GameOver extends AppCompatActivity {
 
         }
         tvHighest.setText("" + highest);
+
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        clickSound = soundPool.load(this, R.raw.click, 1);
+        soundPool.setOnLoadCompleteListener((sp, sampleId, status) -> {
+            if (sampleId == clickSound) {
+                readyToPlay = true;
+            }
+        });
     }
     public void restart(View view) {
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     public void exit(View view) {
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         finish();
     }
 }

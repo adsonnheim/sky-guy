@@ -2,8 +2,11 @@ package com.example.savethebunnyjava;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +16,22 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    public SoundPool soundPool;
+    public int clickSound ;
+    public boolean readyToPlay = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        clickSound = soundPool.load(this, R.raw.click, 1);
+        soundPool.setOnLoadCompleteListener((sp, sampleId, status) -> {
+            if (sampleId == clickSound) {
+                readyToPlay = true;
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.game_menu, menu);
@@ -22,7 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         if (itemId == R.id.home) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -44,6 +65,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void restart(View view) {
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

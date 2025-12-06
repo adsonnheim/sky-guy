@@ -3,6 +3,8 @@ package com.example.savethebunnyjava;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,14 @@ public class LeaderboardActivity extends BaseActivity {
         score8Avatar = findViewById(R.id.score8Avatar);
         score9Avatar = findViewById(R.id.score9Avatar);
         score10Avatar = findViewById(R.id.score10Avatar);
+
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        clickSound = soundPool.load(this, R.raw.click, 1);
+        soundPool.setOnLoadCompleteListener((sp, sampleId, status) -> {
+            if (sampleId == clickSound) {
+                readyToPlay = true;
+            }
+        });
     }
 
     @Override
@@ -80,6 +90,10 @@ public class LeaderboardActivity extends BaseActivity {
     }
 
     public void resetLeaderboard(View view) {
+
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         SharedPreferences sp = getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 

@@ -3,7 +3,9 @@ package com.example.savethebunnyjava;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +61,13 @@ public class SettingsActivity extends BaseActivity {
         });
 
         loadAvatar();
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        clickSound = soundPool.load(this, R.raw.click, 1);
+        soundPool.setOnLoadCompleteListener((sp, sampleId, status) -> {
+            if (sampleId == clickSound) {
+                readyToPlay = true;
+            }
+        });
     }
 
     private void setupVideoPlayer() {
@@ -98,6 +107,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void saveAvatarUri(Uri uri) {
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         SharedPreferences sp = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
@@ -106,6 +118,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void loadAvatar() {
+        if (readyToPlay) {
+            soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
+        }
         SharedPreferences sp = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String uriString = sp.getString(AVATAR_URI_KEY, null);
 
