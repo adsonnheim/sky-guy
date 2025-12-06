@@ -19,6 +19,7 @@
     <uses-permission android:name="com.example.savethebunnyjava.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
+        android:name="com.example.savethebunnyjava.MyApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -31,6 +32,11 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.SaveTheBunnyJava" >
+        <service
+            android:name="com.example.savethebunnyjava.MusicService"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name="com.example.savethebunnyjava.SettingsActivity"
             android:exported="false" />

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.savethebunnyjava.app-mergeDebugResources-30:/values-ms/values-ms.xml",
+            "outputFile": "com.example.savethebunnyjava.app-mergeDebugResources-31:/values-ms/values-ms.xml",
             "map": [
                 {
                     "source": "C:\\Users\\sonnh\\.gradle\\caches\\8.13\\transforms\\e22dd6e248c00a510dec0d7860dcc972\\transformed\\core-1.13.0\\res\\values-ms\\values-ms.xml",

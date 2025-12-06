@@ -13,11 +13,26 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="228dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal">
         <ImageButton
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/home"
             android:onClick="restart" />
+            <ImageButton
+                android:id="@+id/muteButton"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/musiconon"
+                android:onClick="mute" />
+        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +74,7 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
-            android:src="@drawable/rabbit"/>
+            android:src="@drawable/hatguy1"/>
         <Button
             android:id="@+id/selectAvatarButton"
             android:layout_width="wrap_content"
@@ -79,13 +94,11 @@
             android:textSize="32sp" />
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
-
+            android:layout_height="wrap_content">
             <VideoView
                 android:id="@+id/settingsVideoView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:adjustViewBounds="true" />
         </FrameLayout>
         <TextView

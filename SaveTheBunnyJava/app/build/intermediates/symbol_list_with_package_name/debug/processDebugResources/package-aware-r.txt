@@ -3060,6 +3060,8 @@ drawable mtrl_switch_thumb_unchecked_pressed
 drawable mtrl_switch_track
 drawable mtrl_switch_track_decoration
 drawable mtrl_tabs_default_indicator
+drawable musiciconoff
+drawable musiconon
 drawable navigation_empty_icon
 drawable notification_action_background
 drawable notification_bg
@@ -3388,6 +3390,7 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
+id muteButton
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container
 id navigation_bar_item_icon_view
@@ -3814,6 +3817,12 @@ mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+raw bgm
+raw bird
+raw click
+raw dmgplayer
+raw lvlup
+raw menu
 raw nice
 string AboutUs
 string AboutUsText

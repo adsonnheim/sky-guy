@@ -7,7 +7,6 @@ import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
     public SoundPool soundPool;
-    public int clickSound ;
+    public int clickSound;
     public boolean readyToPlay = false;
 
     @Override

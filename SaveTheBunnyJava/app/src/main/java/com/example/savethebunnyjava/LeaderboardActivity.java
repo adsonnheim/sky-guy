@@ -83,17 +83,17 @@ public class LeaderboardActivity extends BaseActivity {
             if (uriString != null) {
                 avatarViews[i].setImageURI(Uri.parse(uriString));
             } else {
-                avatarViews[i].setImageResource(R.drawable.rabbit);
+                avatarViews[i].setImageResource(R.drawable.hatguy1);
             }
         }
 
     }
 
     public void resetLeaderboard(View view) {
-
         if (readyToPlay) {
             soundPool.play(clickSound, 1f, 1f, 1, 0, 1f);
         }
+
         SharedPreferences sp = getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 

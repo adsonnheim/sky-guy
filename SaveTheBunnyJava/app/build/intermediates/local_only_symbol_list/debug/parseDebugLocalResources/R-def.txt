@@ -31,6 +31,8 @@ drawable hatguy2
 drawable home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable musiciconoff
+drawable musiconon
 drawable rabbit
 drawable restart
 drawable spike0
@@ -43,6 +45,7 @@ id avatar_label
 id home
 id ivNewHighest
 id leaderboard
+id muteButton
 id resetLeaderboardButton
 id score1
 id score10
@@ -78,6 +81,12 @@ menu game_menu
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
+raw bgm
+raw bird
+raw click
+raw dmgplayer
+raw lvlup
+raw menu
 raw nice
 string AboutUs
 string AboutUsText
