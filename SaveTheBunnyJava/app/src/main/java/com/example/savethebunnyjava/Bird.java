@@ -55,7 +55,9 @@ public class Bird {
             birdX = -200 + random.nextInt(600) * -1;
             birdY = random.nextInt(GameView.dHeight - getBirdHeight());
             birdVelocity = 5 + random.nextInt(birdRandomVelocity);
+            facingRight = true;
         } else {
+            facingRight = false;
             birdX = 1000 + random.nextInt(600);
             birdY = random.nextInt(GameView.dHeight - getBirdHeight());
             birdVelocity = (5 + random.nextInt(birdRandomVelocity)) * -1;

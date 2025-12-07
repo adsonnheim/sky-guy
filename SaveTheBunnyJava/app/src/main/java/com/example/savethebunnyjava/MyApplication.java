@@ -8,12 +8,15 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import java.net.CookieHandler;
+
 public class MyApplication extends Application implements LifecycleObserver {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+        //muted music since VM seems to have trouble playing it
+        //ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

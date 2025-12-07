@@ -78,12 +78,12 @@ public class SettingsActivity extends BaseActivity {
                 readyToPlay = true;
             }
         });
-
+        checkWifiStatus();
         loadAvatar();
     }
 
     private void setupVideoPlayer() {
-        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.nice;
+        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.tutorial;
         Uri uri = Uri.parse(videoPath);
         settingsVideoView.setVideoURI(uri);
 

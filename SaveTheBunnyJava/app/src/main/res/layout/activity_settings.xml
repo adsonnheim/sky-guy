@@ -94,11 +94,13 @@
             android:textSize="32sp" />
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
             <VideoView
                 android:id="@+id/settingsVideoView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="500dp"
+                android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true" />
         </FrameLayout>
         <TextView

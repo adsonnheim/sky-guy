@@ -72,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         finish();
     }
 
-    private void checkWifiStatus() {
+    public void checkWifiStatus() {
         TextView wTextView = findViewById(R.id.wifi_status_text);
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -33,11 +33,13 @@ public class GameView extends View {
     Context context;
     Handler handler;
     Player player;
-    final long UPDATE_MILLIS = 20;
+    final long UPDATE_MILLIS = 16;
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint textPaintStage = new Paint();
     Paint healthPaint = new Paint();
+    Paint paint = new Paint();
+    private int resultColor = Color.WHITE;
     float TEXT_SIZE = 120;
     static int global = 10;
     int points = 0;
@@ -70,7 +72,10 @@ public class GameView extends View {
     public GameView(Context context) {
         super(context);
         this.context = context;
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setSpeakerphoneOn(true);
         dmgSound = soundPool.load(context, R.raw.dmgplayer, 1);
         lvlUpSound = soundPool.load(context, R.raw.lvlup, 1);
         birdDeathSound = soundPool.load(context, R.raw.bird, 1);
@@ -89,6 +94,12 @@ public class GameView extends View {
         dHeight = size.y;
 
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        background = Bitmap.createScaledBitmap(
+                background,
+                dWidth,
+                dHeight,
+                false
+        );
         ground = BitmapFactory.decodeResource(getResources(), R.drawable.ground);
         //start position of player
         player = new Player(context);
@@ -98,12 +109,14 @@ public class GameView extends View {
         rectBackground = new Rect(0,0,dWidth,dHeight);
         //rectGround = new Rect(0, dHeight - ground.getHeight(), dWidth, dHeight);
         handler = new Handler();
+
         runnable = new Runnable() {
             @Override
             public void run() {
                 invalidate();
             }
         };
+
         textPaint.setColor(Color.rgb(255, 165, 0));
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
@@ -132,11 +145,10 @@ public class GameView extends View {
         }
     }
 
-    //acts as a update function, running every frame
-    @Override
-    protected void onDraw(@NonNull Canvas canvas) {
-        super.onDraw(canvas);
-        Paint paint = new Paint();
+    public void update() {
+        // -------------------------
+        // DAY/NIGHT CYCLE LOGIC -> sets resultColor
+        // -------------------------
         int day = Color.rgb(143, 255, 255);
         int night = Color.rgb(10, 20, 60);
         int dawn = Color.rgb(255, 100, 80);
@@ -144,40 +156,37 @@ public class GameView extends View {
         int phase = cycle / 3;   // = 2000
         int p = points % cycle;
 
-        int resultColor;
-
         if (p < phase) {
-            float t = p / (float)phase;
+            float t = p / (float) phase;
             resultColor = lerpColor(day, night, t);
-        }
-        else if (p < phase * 2) {
-            float t = (p - phase) / (float)phase;
+        } else if (p < phase * 2) {
+            float t = (p - phase) / (float) phase;
             resultColor = lerpColor(night, dawn, t);
-        }
-        else {
-            float t = (p - phase * 2) / (float)phase;
+        } else {
+            float t = (p - phase * 2) / (float) phase;
             resultColor = lerpColor(dawn, day, t);
         }
 
-        paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
-        canvas.drawBitmap(background, null, rectBackground, paint);
-
-        //canvas.drawText("Stage " + stage, 600, TEXT_SIZE, textPaint);
-
+        // -------------------------
+        // CLOUD SPAWNING + MOVEMENT
+        // -------------------------
         if (random.nextInt(100) == 0) { //1/100 each frame to spawn a cloud
             if (clouds.size() < 10) { //limits the amount of clouds on screen
                 Cloud cloud = new Cloud(context);
                 clouds.add(cloud);
             }
         }
-        for (int i = 0; i < clouds.size(); i++) {
-            canvas.drawBitmap(clouds.get(i).cloud[clouds.get(i).cloudFrame], clouds.get(i).cloudX, clouds.get(i).cloudY, null);
-            clouds.get(i).cloudY += clouds.get(i).cloudGravity;
-            if (clouds.get(i).cloudY > dHeight + 200) {
+        for (int i = clouds.size() - 1; i >= 0; i--) {
+            Cloud c = clouds.get(i);
+            c.cloudY += c.cloudGravity;
+            if (c.cloudY > dHeight + 200) {
                 clouds.remove(i);
             }
         }
-        //triggers stage popup
+
+        // -------------------------
+        // STAGE POPUP
+        // -------------------------
         if (points >= (stage * 1000)) {
             stage++;
             stagePopupTime = 100;
@@ -186,27 +195,16 @@ public class GameView extends View {
             }
             Log.d("something", "STAGE");
         }
-
         if (stagePopupTime > 0) {
             stagePopupTime--;
-
-            // fade: 0.0 → 1.0
-            float t = stagePopupTime / 100f;
-
-            // convert to 0–255 alpha
-            int alpha = (int)(255 * t);
-            textPaintStage.setAlpha(alpha);
-
-            canvas.drawText("Stage " + stage, 300, TEXT_SIZE + 300, textPaintStage);
-            textPaintStage.setAlpha(255);
         }
-        //canvas.drawBitmap(ground, null, rectGround, null);
 
-        player.playerAnimation();//plays the idle animation
-        canvas.drawBitmap(player.getPlayerSprite(player.playerCurrentFrame), player.playerX - player.getPlayerWidth()/ 2f, player.playerY - player.getPlayerHeight()/ 2f, null);
+        // -------------------------
+        // PLAYER MOVEMENT & MOMENTUM (updates player position & velocity)
+        // -------------------------
+        player.playerAnimation(); // keeps animation frame logic in sync
 
         if (isTouching && player.isPlayerGrabbed) {
-            // Smoothly move toward touch target
             float dx = targetX - player.playerX;
             float dy = targetY - player.playerY;
             player.playerX += dx * player.playerFollowSpeed;
@@ -217,64 +215,76 @@ public class GameView extends View {
                 player.playerY = targetY;
             }
 
-            // Update velocity for momentum
             player.vx = dx * player.playerFollowSpeed * 2;
             player.vy = dy * player.playerFollowSpeed * 2;
         } else if (player.isMovingWithMomentum) {
-            // Momentum after finger lift
             player.playerX += player.vx;
             player.playerY += player.vy;
             player.vx *= 0.75f;
             player.vy *= 0.75f;
-
             if (Math.abs(player.vx) < 0.1f && Math.abs(player.vy) < 0.1f) {
                 player.isMovingWithMomentum = false;
             }
         }
-        Bird.birdRandomVelocity = 5 + ((int)Math.floor(points / 500) * 30);
-        for (int i = 0; i < birds.size(); i++) {//draws birds
-            canvas.drawBitmap(birds.get(i).getBird(birds.get(i).birdFrame), birds.get(i).birdX, birds.get(i).birdY, null);
-            birds.get(i).birdFrame++;
-            if (birds.get(i).birdFrame > 2) { //controls birds animation
-                birds.get(i).birdFrame = 0;
-            }
-            //bird movement
-            birds.get(i).birdX += birds.get(i).birdVelocity;
-            birds.get(i).birdY += birds.get(i).birdGravity;
-            //bird tocuhes side screen
-            if ((birds.get(i).birdX + birds.get(i).getBirdWidth() >= dWidth && birds.get(i).facingRight) ||
-                    (birds.get(i).birdX < 0 && !birds.get(i).facingRight) || (birds.get(i).birdY + birds.get(i).getBirdHeight() >= dHeight + 100)) {
-                points += 10;
-                if (readyToPlay) {
-                    soundPool.play(birdDeathSound, 0.5f, 0.5f, 3, 0, 1f);
-                }
-                Explosion explosion = new Explosion(context);
-                explosion.explosionX = birds.get(i).birdX;
-                explosion.explosionY = birds.get(i).birdY;
-                explosions.add(explosion);
-                birds.get(i).resetPosition();
 
+        // -------------------------
+        // BIRD LOGIC (movement + wall hit)
+        // -------------------------
+        Bird.birdRandomVelocity = 10 + ((int)Math.floor(points / 200) * 3);
+        for (int i = 0; i < birds.size(); i++) {
+            Bird b = birds.get(i);
+
+            // animation frame
+            b.birdFrame++;
+            if (b.birdFrame > 2) b.birdFrame = 0;
+
+            // movement
+            b.birdX += b.birdVelocity;
+            b.birdY += b.birdGravity;
+
+            // bird touches side / bottom: spawn explosion, reset, sound, points
+            if ((b.birdX + b.getBirdWidth() >= dWidth && b.facingRight) ||
+                    (b.birdX < 0 && !b.facingRight) ||
+                    (b.birdY + b.getBirdHeight() >= dHeight + 100)) {
+
+                Explosion explosion = new Explosion(context);
+                explosion.explosionX = b.birdX;
+                explosion.explosionY = b.birdY;
+                explosions.add(explosion);
+
+                b.resetPosition();
+
+                if (readyToPlay) {
+                    soundPool.play(birdDeathSound, 0.5f, 0.5f, 1, 0, 1f);
+                }
+                points += 10;
             }
         }
 
+        // -------------------------
+        // BIRD <-> PLAYER COLLISIONS
+        // -------------------------
         for (int i = 0; i < birds.size(); i++) {
-            if (birds.get(i).birdX + birds.get(i).getBirdWidth() >= player.playerX - player.getPlayerWidth()/2f
-            && birds.get(i).birdX <= player.playerX + player.getPlayerWidth() / 2f
-            && birds.get(i).birdY + birds.get(i).getBirdHeight() >= player.playerY - player.getPlayerHeight()/2f
-            && birds.get(i).birdY <= player.playerY + player.getPlayerHeight()/2f) {
-                //collision happened
-                //Note: made playerSprite immortal for testing purposes
+            Bird b = birds.get(i);
+
+            if (b.birdX + b.getBirdWidth() >= player.playerX - player.getPlayerWidth()/2f
+                    && b.birdX <= player.playerX + player.getPlayerWidth() / 2f
+                    && b.birdY + b.getBirdHeight() >= player.playerY - player.getPlayerHeight()/2f
+                    && b.birdY <= player.playerY + player.getPlayerHeight()/2f) {
+
                 life--;
                 if (readyToPlay) {
                     soundPool.play(dmgSound, 1f, 1f, 1, 0, 1f);
                 }
-                Explosion explosion = new Explosion(context);
-                explosion.explosionX = birds.get(i).birdX;
-                explosion.explosionY = birds.get(i).birdY;
-                explosions.add(explosion);
-                birds.get(i).resetPosition();
 
-                // When the player dies
+                Explosion explosion = new Explosion(context);
+                explosion.explosionX = b.birdX;
+                explosion.explosionY = b.birdY;
+                explosions.add(explosion);
+
+                b.resetPosition();
+
+                // When the player dies (keep inline exactly as you had it)
                 if (life == 0) {
                     SharedPreferences sp = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
@@ -292,43 +302,106 @@ public class GameView extends View {
                     intent.putExtra("points", points);
                     context.startActivity(intent);
                     ((Activity) context).finish();
+
+                    // return early: game ended
+                    return;
                 }
             }
         }
 
-        for (int i = 0; i < explosions.size(); i++) {
-            canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).explosionX,
-                    explosions.get(i).explosionY, null);
-            explosions.get(i).explosionFrame++;
-            if (explosions.get(i).explosionFrame > 3) {
+        // -------------------------
+        // EXPLOSIONS (advance frames and remove)
+        // -------------------------
+        for (int i = explosions.size() - 1; i >= 0; i--) {
+            Explosion e = explosions.get(i);
+            e.explosionFrame++;
+            if (e.explosionFrame > 3) {
                 explosions.remove(i);
             }
         }
 
+        // Note: health color, points, etc. remain handled in draw or here as needed
+    }
+
+    //acts as a update function, running every frame
+    @Override
+    protected void onDraw(@NonNull Canvas canvas) {
+        super.onDraw(canvas);
+
+        // call update first (mutates game state)
+        update();
+
+        // create paint for background tinting (kept local as in your original)
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(resultColor, PorterDuff.Mode.SRC_ATOP));
+        canvas.drawBitmap(background, 0, 0, paint);
+
+        // draw clouds
+        for (int i = 0; i < clouds.size(); i++) {
+            Cloud c = clouds.get(i);
+            canvas.drawBitmap(c.cloud[c.cloudFrame], c.cloudX, c.cloudY, null);
+        }
+
+        // stage popup text (fade handled by stagePopupTime updated in update())
+        if (stagePopupTime > 0) {
+            float t = stagePopupTime / 100f;
+            int alpha = (int)(255 * t);
+            textPaintStage.setAlpha(alpha);
+            canvas.drawText("Stage " + stage, 300, TEXT_SIZE + 300, textPaintStage);
+            textPaintStage.setAlpha(255);
+        }
+
+        // draw player
+        canvas.drawBitmap(player.getPlayerSprite(player.playerCurrentFrame),
+                player.playerX - player.getPlayerWidth()/ 2f,
+                player.playerY - player.getPlayerHeight()/ 2f,
+                null);
+
+        // draw birds
+        for (int i = 0; i < birds.size(); i++) {
+            Bird b = birds.get(i);
+            canvas.drawBitmap(b.getBird(b.birdFrame), b.birdX, b.birdY, null);
+        }
+
+        // draw explosions
+        for (int i = 0; i < explosions.size(); i++) {
+            Explosion e = explosions.get(i);
+            canvas.drawBitmap(e.getExplosion(e.explosionFrame), e.explosionX, e.explosionY, null);
+        }
+
+        // health bar color
         if (life == 2) {
             healthPaint.setColor(Color.YELLOW);
         } else if (life == 1) {
-            healthPaint.setColor((Color.RED));
+            healthPaint.setColor(Color.RED);
+        } else {
+            healthPaint.setColor(Color.GREEN);
         }
-        int barBottom = 300;      // fixed bottom
-        int barWidth = 60;
 
-        int maxHeight = 80;      // full health height
-        int currentHeight = (int)(maxHeight * life);  // life should be 0..1
-        Paint borderPaint = new Paint();
-        borderPaint.setStyle(Paint.Style.STROKE);   // IMPORTANT!!
-        borderPaint.setColor(Color.BLACK);
-        borderPaint.setStrokeWidth(8);
+        int barBottom = 300;
+        int maxHeight = 80;
+        int currentHeight = (int)(maxHeight * life);
+
+        // draw health bar
         canvas.drawRect(
-                dWidth - 60,               // left
-                barBottom - currentHeight, // top (moves up when life gets lower)
-                dWidth - 20,               // right
-                barBottom,                 // bottom stays fixed
+                dWidth - 60,
+                barBottom - currentHeight,
+                dWidth - 20,
+                barBottom,
                 healthPaint
         );
+
+        // stroke border (kept as you had it)
+        Paint borderPaint = new Paint();
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(Color.BLACK);
+        borderPaint.setStrokeWidth(8);
         canvas.drawRect(dWidth - 60, barBottom - currentHeight, dWidth - 20, barBottom, borderPaint);
 
+        // draw score
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
+
+        // schedule next frame
         handler.postDelayed(runnable, UPDATE_MILLIS);
     }
 
